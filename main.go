@@ -1,10 +1,11 @@
 package main
 
 import (
-	chamcong "DACN/QLNV/ChamCong"
+	chamcong "DACN/QLNV/Chamcong"
 	dbconnection "DACN/QLNV/DBconnect"
 	Salary "DACN/QLNV/Salary"
 	Staff "DACN/QLNV/Staff"
+	stafffault "DACN/QLNV/StaffFault"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,10 +29,11 @@ func main() {
 		ChamCong.PUT("/CheckOut/:MaNV", chamcong.CheckOut(db))
 		ChamCong.GET("/CheckInfor/:MaNV", chamcong.CheckInfor(db))
 	}
-	TingLuong := r.Group("/luong")
+	TinhLuong := r.Group("/luong")
 	{
-		TingLuong.GET("/:Thang/:MaNV", Salary.Tinhluong(db))
+		TinhLuong.GET("/:Thang/:MaNV", Salary.Tinhluong(db))
+		TinhLuong.GET("/Danhsachphamloi", stafffault.DanhSachNhanVienDiMuonTheoBoPhan(db))
 	}
-	r.Run()
+	r.Run(":5050")
 
 }

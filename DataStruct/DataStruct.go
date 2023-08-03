@@ -5,11 +5,20 @@ import (
 )
 
 type StaffInfor struct {
-	MaNV        int    `json:"MaNV" gorm:"column:MaNV"`
-	TenNV       string `json:"TenNV" gorm:"column:TenNV"`
-	SoDienThoai string `json:"SoDienThoai" gorm:"column:SoDienThoai"`
-	DiaChi      string `json:"DiaChi" gorm:"column:DiaChi"`
-	Email       string `json:"Email" gorm:"column:Email"`
+	MaNV        int     `json:"MaNV" gorm:"column:MaNV"`
+	TenNV       string  `json:"TenNV" gorm:"column:TenNV"`
+	SoDienThoai string  `json:"SoDienThoai" gorm:"column:SoDienThoai"`
+	DiaChi      string  `json:"DiaChi" gorm:"column:DiaChi"`
+	Email       string  `json:"Email" gorm:"column:Email"`
+	Luong       float32 `json:"luong" gorm:"column:Luong"`
+	MaBoPhan    string  `json:"BoPhan" gorm:"column:MaBP"`
+}
+
+type GetStaffInfor struct {
+	MaNV   int    `json:"MaNV" gorm:"column:MaNV"`
+	TenNV  string `json:"TenNV" gorm:"column:TenNV"`
+	Email  string `json:"Email" gorm:"column:Email"`
+	BoPhan string `json:"BoPhan" gorm:"column:BoPhan"`
 }
 
 type StaffUpdateInfor struct {
@@ -26,6 +35,9 @@ type CheckInCheckOut struct {
 }
 
 type Giolam struct {
-	GioVaoLam *time.Time `json:"GioVaoLam" gorm:"column:GioBatDau"`
-	GioTanLam *time.Time `json:"GioTanLam" gorm:"column:GioKetThuc"`
+	MaNV      int        `json:"MaNV" gorm:"column:MaNV"`
+	MaBoPhan  string     `json:"BoPhan" gorm:"column:MaBP"`
+	GioVaoLam *time.Time `json:"GioVaoLam" gorm:"column:CheckIn"`
+	GioTanLam *time.Time `json:"GioTanLam" gorm:"column:CheckOut"`
+	Muon      bool
 }

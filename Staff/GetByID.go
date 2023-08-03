@@ -12,7 +12,7 @@ import (
 
 func GetStaffInforByID(db *gorm.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
-		var data datastruct.StaffInfor
+		var data datastruct.GetStaffInfor
 		MaNV, err := strconv.Atoi(c.Param("MaNV"))
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{

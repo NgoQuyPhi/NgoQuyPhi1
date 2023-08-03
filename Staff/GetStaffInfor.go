@@ -12,7 +12,7 @@ import (
 func GetStaffInfor(db *gorm.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
 
-		var data []datastruct.StaffInfor
+		var data []datastruct.GetStaffInfor
 
 		if err := db.Table("NhanVien").
 			Order("MaNV desc").
