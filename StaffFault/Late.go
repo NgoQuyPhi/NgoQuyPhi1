@@ -8,14 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func DanhSachNhanVienDiMuonTheoBoPhan(db *gorm.DB) func(*gin.Context) {
+func ListStaffLateForWork(db *gorm.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
-		var danhsachchamcong []datastruct.Giolam
+		var ListTimekeeping []datastruct.Workingtime
 
 		err := db.Table("ChamCong").
 			Joins("LEFT JOIN NhanVien on ChamCong.MaNV = NhanVien.MaNV"). //lay danh sach cham cong truyen vao slice danhsachchamcong
 			Select("ChamCong.MaNV,NhanVien.MaBP, ChamCong.CheckIn, ChamCong.CheckOut").
-			Find(&danhsachchamcong).Error
+			Find(&ListTimekeeping).Error
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -24,20 +24,16 @@ func DanhSachNhanVienDiMuonTheoBoPhan(db *gorm.DB) func(*gin.Context) {
 			return
 		}
 
-		var muonlam []datastruct.Giolam
+		var LateForWork []datastruct.Workingtime
 
-		for i := range danhsachchamcong {
-			if danhsachchamcong[i].GioVaoLam.Hour() > 8 { //kiem tra tung phan tu trong danh sach cham cong
-				danhsachchamcong[i].Muon = true //neu phan tu nao co gio checkin > 8h thi di muon
-				muonlam = append(muonlam, danhsachchamcong[i])
-			} else {
-				danhsachchamcong[i].Muon = false
+		for i := range ListTimekeeping {
+			if ListTimekeeping[i].GioVaoLam.Hour() > 8 { //kiem tra tung phan tu trong danh sach cham cong
+				LateForWork = append(LateForWork, ListTimekeeping[i]) //neu phan tu nao co gio checkin > 8h thi di muon
 			}
-
 		}
 
 		c.JSON(http.StatusBadRequest, gin.H{
-			"Danh sach nhan vien muon lam:": muonlam, // xuat ra danh sach nhan vien di muon
+			"Danh sach nhan vien muon lam:": LateForWork, // xuat ra danh sach nhan vien di muon
 		})
 	}
 }

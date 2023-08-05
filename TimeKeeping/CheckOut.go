@@ -1,4 +1,4 @@
-package chamcong
+package timekeeping
 
 import (
 	datastruct "DACN/QLNV/DataStruct"
@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func CheckIn(db *gorm.DB) func(*gin.Context) {
+func CheckOut(db *gorm.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
 		Manv, err := strconv.Atoi(c.Param("MaNV"))
 		if err != nil {
@@ -24,22 +24,13 @@ func CheckIn(db *gorm.DB) func(*gin.Context) {
 		now := time.Now().UTC()
 
 		data := datastruct.CheckInCheckOut{
-			MaNV:    Manv,
-			CheckIn: &now,
-		}
-
-		day := now.Day()
-
-		if err := db.Table("ChamCong").
-			Where("MaNV = ? and DAY(CheckIn) = ?", Manv, day).
-			Delete(nil).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"Loi": err.Error(),
-			})
+			MaNV:     Manv,
+			CheckOut: &now,
 		}
 
 		if err := db.Table("ChamCong").
-			Create(&data).Error; err != nil {
+			Where("MaNV = ? and CheckOut is null", Manv).
+			Updates(&data).Error; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"loi": err.Error(),
 			})
@@ -47,7 +38,7 @@ func CheckIn(db *gorm.DB) func(*gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"CheckIn": true,
+			"CheckOut": true,
 		})
 	}
 }
