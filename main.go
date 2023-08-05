@@ -31,9 +31,9 @@ func main() {
 	}
 	TinhLuong := r.Group("/luong")
 	{
-		TinhLuong.GET("/:Thang/:MaNV", Salary.Tinhluong(db))
+		TinhLuong.GET("/:month/:MaNV", Salary.SALARY(db))
 		TinhLuong.GET("/Danhsachphamloi", stafffault.DanhSachNhanVienDiMuonTheoBoPhan(db))
 	}
-	r.Run(":5050")
+	r.Run()
 
 }
